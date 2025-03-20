@@ -21,8 +21,14 @@ app.get('/search', (req, res) => {
   res.render('search');
 });
 
+// Utility function to delay execution
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 // Endpoint for searching a coin and displaying results on cards.ejs
 app.get('/searchCoin', async (req, res) => {
+  // Add a small delay before making the request
+  await delay(500);
+  
   const coinName = req.query.coinName.toLowerCase(); // Get coin name from query parameter
 
   // Set up API request
@@ -32,7 +38,9 @@ app.get('/searchCoin', async (req, res) => {
       headers: {
           accept: 'application/json',
           'x-cg-demo-api-key': 'CG-RBC6FQqZojvJsUpYRR3ZzteZ'
-      }
+      },
+      // Add a timeout to prevent overwhelming the API
+      timeout: 5000
   };
 
   try {
@@ -55,7 +63,13 @@ app.get('/searchCoin', async (req, res) => {
       }
   } catch (error) {
       console.error(error);
-      res.send("Error fetching data. Please try again later.");
+      
+      // Check if it's a 403 error (rate limiting/forbidden)
+      if (error.response && error.response.status === 403) {
+          res.render('search', { errorMessage: "API rate limit reached. Please try again later." });
+      } else {
+          res.render('search', { errorMessage: "Error fetching data. Please try again later." });
+      }
   }
 });
 
