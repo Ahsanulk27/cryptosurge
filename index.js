@@ -27,7 +27,7 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 // Endpoint for searching a coin and displaying results on cards.ejs
 app.get('/searchCoin', async (req, res) => {
   // Add a small delay before making the request
-  await delay(500);
+  await delay(800);
   
   const coinName = req.query.coinName.toLowerCase(); // Get coin name from query parameter
 
@@ -36,8 +36,7 @@ app.get('/searchCoin', async (req, res) => {
       method: 'GET',
       url: `${API_URL}/simple/price?ids=${coinName}&vs_currencies=usd&include_market_cap=true&include_24hr_change=true&include_last_updated_at=true`,
       headers: {
-          accept: 'application/json',
-          'x-cg-demo-api-key': 'CG-JnUbdejb6Hq2dYWNNQKtUMnV' // Your new API key
+          accept: 'application/json'
       },
       // Add a timeout to prevent overwhelming the API
       timeout: 5000
