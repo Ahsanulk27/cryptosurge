@@ -36,7 +36,8 @@ app.get('/searchCoin', async (req, res) => {
       method: 'GET',
       url: `${API_URL}/simple/price?ids=${coinName}&vs_currencies=usd&include_market_cap=true&include_24hr_change=true&include_last_updated_at=true`,
       headers: {
-          accept: 'application/json'
+          accept: 'application/json',
+          'x-cg-demo-api-key': 'CG-JnUbdejb6Hq2dYWNNQKtUMnV' // Your new API key
       },
       // Add a timeout to prevent overwhelming the API
       timeout: 5000
